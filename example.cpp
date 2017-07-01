@@ -7,6 +7,20 @@
 #include "ucccccp.hpp"
 #include "cheat.hpp"
 
+// COMMANDS (ripped straight from cathook)
+
+CatCommand utfccp_encrypt("ucccccp_encrypt", "Encrypt a message", [](const CCommand& args) {
+	logging::Info("%s", ucccccp::encrypt(std::string(args.ArgS())).c_str());
+});
+
+CatCommand utfccp_decrypt("ucccccp_decrypt", "Decrypt a message", [](const CCommand& args) {
+	if (ucccccp::validate(std::string(args.ArgS()))) {
+		logging::Info("%s", ucccccp::decrypt(std::string(args.ArgS())).c_str());
+	} else {
+		logging::Info("Invalid input data!");
+	}
+});
+
 // SENDING messages
 
 bool SendNetMsg_hook(void* _this, INetMessage& msg, bool bForceReliable = false, bool bVoice = false) {
