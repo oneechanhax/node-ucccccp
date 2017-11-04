@@ -1,0 +1,2 @@
+# Ignore build files as they are for release
+build/*
