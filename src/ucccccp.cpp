@@ -45,17 +45,20 @@ void Encrypt(const FunctionCallbackInfo<Value>& args) {
 void Decrypt(const FunctionCallbackInfo<Value>& args) {
 	Isolate* isolate = args.GetIsolate(); // For error throwing
 		
-	// check if input is valid
+	// check for arguments
 	if (args.Length() < 1) {
-		String::Utf8Value str(args[0]);
-		if (!ucccccp::validate(std::string(ToCString(str)))) {
-			isolate->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "Not encrypted in ucccccp")));
-			return;
-		}
+		isolate->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "Nothing to decrypt")));
+		return;
 	}
-		
-	// Output decrypted
+	
+	// Check if input is valid
 	String::Utf8Value str(args[0]);
+	if (!ucccccp::validate(std::string(ToCString(str)))) {
+		isolate->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "Not encrypted in ucccccp")));
+		return;
+	}
+			
+	// Output decrypted
 	args.GetReturnValue().Set(String::NewFromUtf8(isolate, ucccccp::decrypt(std::string(ToCString(str))).c_str()));
 }
 	
